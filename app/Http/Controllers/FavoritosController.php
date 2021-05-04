@@ -28,10 +28,13 @@ class FavoritosController extends Controller
                     $item_res = Http::get("https://hacker-news.firebaseio.com/v0/item/".$item.".json");
                 
                     $favoritos [] = $item_res->json();
-                        
-                    return view('favoritos', compact('favoritos'));
                 }
-            }       
+                return view('favoritos', compact('favoritos'));
+            }else{
+                return redirect('/')->with('warning', 'No has añadido nada a favorito');
+            }
+        
+        
         }else{
             $favoritos = null;
             return view('favoritos', compact('favoritos'));
@@ -104,13 +107,12 @@ class FavoritosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id_item)
+    public function destroy($id)
     {
-        $item = favorito::find($id_item);
-        
-        $item->delete();
+            $item = Favorito::whereIn('id_item', [$id])->first();
+            $item->delete();
 
-        return redirect('/')->with('success', 'Eliminado de favoritos');
+        return redirect()->back()->with('error', 'Eliminado de favoritos');
 
     }
 }
