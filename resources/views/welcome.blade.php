@@ -29,6 +29,14 @@
         </ul>
     </div>
 @endif
+@if (\Session::has('warning'))
+    <div class="alert alert-warning">
+        <ul>
+            <li>{!! \Session::get('warning') !!}</li>
+        </ul>
+    </div>
+@endif
+
 @foreach ($item_data as $key=>$item)
 <div class="card mb-3">
   <div class="row no-gutters">
