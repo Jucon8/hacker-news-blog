@@ -43,10 +43,12 @@
     <div class="col-md-4" style="overflow: hidden">
     <svg class="bd-placeholder-img card-img-top" width="50%" height="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Hacker News</title><rect width="50%" height="100%" fill="#55595c"/><text x="20%" y="50%" fill="#eceeef" dy=".3em" font-size="55">{{$key+1}}</text></svg>
       </div>
+      @if($item['id']!=null)
           <div class="col-md-6" id="textoNoticia">
             <div class="post-preview">
+              @if(!empty($item['id']))
         <a href=" {{ route('noticia.show', $item['id']) }} ">
-        
+              @endif
             <h2 class="post-title">
               {{$item['title']}}
             </h2>
@@ -68,21 +70,35 @@
           </div>
 
           <!-- FAVORITOS -->
-          <div class="col-md-2" id="boton-favoritos" style="display: grid;">
-          <form action="{{action('FavoritosController@store')}}" method="POST" style="display: flex;">
-              <input type="hidden" name="_token" value="{{ csrf_token() }}">
-              <input type="hidden" name="id_item" value="{{$item['id']}}">
-              <input type="hidden" name="title_item" value="{{$item['title']}}">
-              @if(!empty($item['url']))
-              <input type="hidden" name="url_item" value="{{$item['url']}}">
-              @else
-              <input type="hidden" name="url_item" value="SIN URL">
-              @endif
-              <input class="btn btn-success" type="submit" value="Añadir a favoritos" style="align-self: center;">
-          </form>
-        </div>
-      </div>
-    </div>
-        <hr>
+                  @if(!empty(Auth::user()->id))
+                  <div class="col-md-2" id="boton-favoritos" style="display: grid;">
+                  <form action="{{action('FavoritosController@store')}}" method="POST" style="display: flex;">
+                      <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                      <input type="hidden" name="id_item" value="{{$item['id']}}">
+                      <input type="hidden" name="title_item" value="{{$item['title']}}">
+                      @if(!empty($item['url']))
+                      <input type="hidden" name="url_item" value="{{$item['url']}}">
+                      @else
+                      <input type="hidden" name="url_item" value="SIN URL">
+                      @endif
+                      <input class="btn btn-success" type="submit" value="Añadir a favoritos" style="align-self: center;">
+                  </form>
+                </div>
+              </div>
+            </div>
+                <hr>
+                @else
+                <div class="col-md-2" id="boton-favoritos" style="display: grid;">
+                  <a class="btn btn-success" href="{{route('login')}}" type="button" style="align-self: center;">Iniciá Sesión</a>
+                </div>
+              </div>
+            </div>
+                <hr>
+                @endif
+            @else
+            <div class="col-md-12" style="overflow: hidden">
+            <h1>Respuesta de API incorrecta</h1>
+                </div>
+                @endif
         @endforeach
 @endsection

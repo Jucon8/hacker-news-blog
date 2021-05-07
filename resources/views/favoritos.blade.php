@@ -10,6 +10,7 @@
           </div>
   </header>
   <!-- Main Content -->
+  <hr>
   <h1>FAVORITOS</h1>
 <hr>
 @if($favoritos==null)
